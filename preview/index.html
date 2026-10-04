@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Pretty Girls Love Pink — preview (mock Spotify)</title>
+<link rel="stylesheet" href="../pretty-girls-love-pink/user.css">
+<style>
+  /* Mock-only layout; real Spotify supplies this. */
+  html, body { height: 100%; margin: 0; }
+  .Root { display: grid; grid-template-columns: 260px 1fr; grid-template-rows: 1fr 90px; gap: 10px; height: 100%; padding: 10px; box-sizing: border-box; }
+  .Root__nav-bar { padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+  .Root__main-view { overflow: auto; padding: 24px; }
+  .Root__now-playing-bar { grid-column: 1 / 3; display: flex; align-items: center; gap: 24px; padding: 0 20px; border-radius: 16px; }
+  .main-gridContainer-gridContainer { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 18px; margin-top: 16px; }
+  .main-card-card { padding: 14px; }
+  .main-card-card .art { aspect-ratio: 1; border-radius: 14px; margin-bottom: 10px; }
+  .main-playButton-PlayButton { position: absolute; right: 14px; bottom: 70px; width: 44px; height: 44px; border: 0; cursor: pointer; }
+  [data-testid="control-button-playpause"] { width: 44px; height: 44px; border-radius: 50%; cursor: pointer; }
+  .cover { width: 56px; height: 56px; background: linear-gradient(135deg,#E8467C,#FFB8CE); }
+  .main-trackList-trackListRow { padding: 10px; }
+  .heart-btn { background: none; border: 0; font-size: 22px; cursor: pointer; color: #E8467C; }
+  .progress { flex: 1; height: 8px; background: #F7C6D4; border-radius: 99px; position: relative; }
+  .progress i { display: block; width: 40%; height: 100%; background: #E8467C; border-radius: 99px; }
+  .progress b { position: absolute; left: calc(40% - 11px); top: -7px; width: 22px; height: 22px; background: var(--pglp-cherry-img) center/contain no-repeat; }
+  .main-navBar-navBarLink { cursor: pointer; font-size: 18px; }
+</style>
+</head>
+<body>
+<div class="Root">
+  <nav class="Root__nav-bar">
+    <div class="main-navBar-navBarLink">🏠 Home</div>
+    <div class="main-navBar-navBarLink">🔍 Search</div>
+    <div class="main-navBar-navBarLink">📚 Your Library</div>
+  </nav>
+  <main class="Root__main-view">
+    <h1>Hot Girls Read Books</h1>
+    <div class="main-shelf-title">made for you</div>
+    <div class="main-gridContainer-gridContainer" id="grid"></div>
+    <div class="main-trackList-trackListRow">1 &nbsp; Pink Pony Club <button class="heart-btn" data-testid="add-button" aria-checked="false" aria-label="Save to Your Library">♡</button></div>
+    <div class="main-trackList-trackListRow">2 &nbsp; Cherry Bomb <button class="heart-btn" data-testid="add-button" aria-checked="false" aria-label="Save to Your Library">♡</button></div>
+    <div data-testid="empty-state" style="margin-top:20px;text-align:center">Nothing here yet…</div>
+  </main>
+  <footer class="Root__now-playing-bar">
+    <div class="main-nowPlayingWidget-coverArt"><div class="cover cover-art"></div></div>
+    <button data-testid="control-button-playpause" aria-label="Play" id="pp">▶</button>
+    <div class="progress"><i></i><b></b></div>
+  </footer>
+</div>
+
+<script>
+  // Mock Spicetify so theme.js runs outside Spotify.
+  (function () {
+    var l = {}, playing = false;
+    window.Spicetify = { Player: {
+      addEventListener: function (n, f) { (l[n] = l[n] || []).push(f); },
+      isPlaying: function () { return playing; },
+      _emit: function (n) { (l[n] || []).forEach(function (f) { f(); }); }
+    } };
+    document.addEventListener('DOMContentLoaded', function () {
+      var grid = document.getElementById('grid');
+      var names = ['Romance Era', 'Cherry Pop', 'Bookish Beats', 'Enemies to Lovers', 'Pink Hour', 'Carousel Dreams', 'Bow Core', 'Sweet Tooth'];
+      var cols = ['#E8467C', '#B3122E', '#FFB8CE', '#F28AA8'];
+      names.forEach(function (n, i) {
+        var c = document.createElement('div');
+        c.className = 'main-card-card';
+        c.innerHTML = '<div class="art" style="background:' + cols[i % 4] + '"></div><strong>' + n + '</strong><button class="main-playButton-PlayButton" aria-label="Play"></button>';
+        grid.appendChild(c);
+      });
+      document.getElementById('pp').addEventListener('click', function () {
+        playing = !playing;
+        window.Spicetify.Player._emit('onplaypause');
+      });
+      // simulate a song change every 12s while playing
+      setInterval(function () { if (playing) window.Spicetify.Player._emit('songchange'); }, 12000);
+    });
+  })();
+</script>
+<script src="../pretty-girls-love-pink/theme.js"></script>
+</body>
+</html>

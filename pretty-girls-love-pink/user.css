@@ -1,0 +1,232 @@
+/* ==========================================================================
+   Pretty Girls Love Pink — Spicetify skin
+   Pink coquette / bookish scrapbook: gingham, sticker cards, bows, cherries.
+   Selectors that may need tweaks after Spotify updates are marked [FRAGILE].
+   ========================================================================== */
+
+:root {
+  --pglp-blush: #FFE4EC;
+  --pglp-cream: #FFF5EE;
+  --pglp-pink: #E8467C;
+  --pglp-cherry: #B3122E;
+  --pglp-rose: #FFD1DF;
+  --pglp-wine: #5A0F24;
+  --pglp-tilt: 0deg;
+  --pglp-font-head: "DM Serif Display", "Playfair Display", Georgia, "Times New Roman", serif;
+  --pglp-font-script: "Snell Roundhand", "Brush Script MT", "Segoe Script", cursive;
+  --pglp-gingham: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Crect width='40' height='40' fill='%23FFF5EE'/%3E%3Crect width='20' height='40' fill='%23F7A8BF' fill-opacity='.45'/%3E%3Crect width='40' height='20' fill='%23F7A8BF' fill-opacity='.45'/%3E%3C/svg%3E");
+  --pglp-bow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 80'%3E%3Cpath d='M60 40C40 6 6 2 6 26c0 24 30 28 54 14Z' fill='%23B3122E' stroke='%23fff' stroke-width='3'/%3E%3Cpath d='M60 40C80 6 114 2 114 26c0 24-30 28-54 14Z' fill='%23B3122E' stroke='%23fff' stroke-width='3'/%3E%3Cpath d='M60 40 34 76h14l12-20 12 20h14Z' fill='%238F0E24' stroke='%23fff' stroke-width='3'/%3E%3Crect x='48' y='30' width='24' height='22' rx='8' fill='%23E8467C' stroke='%23fff' stroke-width='3'/%3E%3C/svg%3E");
+  --pglp-heart: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 90'%3E%3Cpath d='M50 84C10 56 2 36 2 24 2 10 13 2 26 2c12 0 20 7 24 16C54 9 62 2 74 2c13 0 24 8 24 22 0 12-8 32-48 60Z' fill='%23E8467C' stroke='%23fff' stroke-width='4' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --pglp-cherry-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 4C40 30 28 52 24 66M50 4c8 26 20 48 24 62' fill='none' stroke='%233E7B3A' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='24' cy='76' r='20' fill='%23B3122E' stroke='%23fff' stroke-width='3'/%3E%3Ccircle cx='74' cy='76' r='20' fill='%23C81A38' stroke='%23fff' stroke-width='3'/%3E%3C/svg%3E");
+}
+
+/* ---- Base surfaces --------------------------------------------------- */
+body, .Root, .encore-dark-theme, .encore-light-theme {
+  --background-base: var(--pglp-blush);
+  --background-highlight: var(--pglp-rose);
+  --background-press: #FFB8CE;
+  --background-elevated-base: var(--pglp-rose);
+  --background-elevated-highlight: #FFC2D4;
+  --text-base: var(--pglp-wine);
+  --text-subdued: #9C3B58;
+  --text-bright-accent: var(--pglp-pink);
+  --essential-bright-accent: var(--pglp-pink);
+  --decorative-base: var(--pglp-wine);
+  font-family: var(--pglp-font-head);
+  color: var(--pglp-wine);
+}
+
+.Root__top-container, .Root { background: var(--pglp-blush) !important; }
+
+/* [FRAGILE] main view: cream gingham */
+.Root__main-view, .main-view-container, .main-view-container__scroll-node-child {
+  background-color: var(--pglp-cream) !important;
+  background-image: var(--pglp-gingham) !important;
+  background-size: 40px 40px;
+  border-radius: 24px;
+  border: 3px solid #fff;
+  box-shadow: 0 6px 0 rgba(232, 70, 124, .25);
+}
+
+/* [FRAGILE] sidebar */
+.Root__nav-bar, .main-yourLibraryX-libraryContainer, .main-navBar-navBar {
+  background: var(--pglp-rose) !important;
+  border-radius: 24px;
+  border: 3px solid #fff;
+  box-shadow: 0 6px 0 rgba(232, 70, 124, .25);
+}
+.main-navBar-navBarLink, .main-yourLibraryX-navLink { font-family: var(--pglp-font-head); transition: transform .2s, color .2s; }
+.main-navBar-navBarLink:hover, .main-yourLibraryX-navLink:hover { transform: translateX(4px) rotate(-1deg); color: var(--pglp-pink) !important; }
+
+/* ---- Typography ------------------------------------------------------ */
+h1, h2, h3, .main-type-canon, .main-type-alto, .main-type-forte, .encore-text-title-large, .encore-text-headline-large {
+  font-family: var(--pglp-font-head) !important;
+  color: var(--pglp-cherry) !important;
+  letter-spacing: .01em;
+}
+.main-shelf-title, .main-type-ballad { font-family: var(--pglp-font-script); font-size: 1.5em; color: var(--pglp-pink) !important; }
+
+/* ---- Sticker cards --------------------------------------------------- */
+/* [FRAGILE] shelf / grid cards */
+.main-card-card, [data-testid="card"], .main-gridContainer-gridContainer > div > div {
+  background: var(--pglp-rose) !important;
+  border: 4px solid #fff !important;
+  border-radius: 20px !important;
+  box-shadow: 0 5px 0 rgba(179, 18, 46, .25), 0 10px 20px rgba(232, 70, 124, .2);
+  transform: rotate(var(--pglp-tilt));
+  transition: transform .25s cubic-bezier(.3, 1.6, .5, 1), box-shadow .25s;
+  position: relative;
+}
+.main-card-card:nth-child(3n+1) { --pglp-tilt: -1.2deg; }
+.main-card-card:nth-child(3n+2) { --pglp-tilt: .8deg; }
+.main-card-card:nth-child(3n)   { --pglp-tilt: -.4deg; }
+.main-card-card:hover {
+  transform: translateY(-6px) rotate(calc(var(--pglp-tilt) * -2)) scale(1.03);
+  box-shadow: 0 9px 0 rgba(179, 18, 46, .3), 0 18px 30px rgba(232, 70, 124, .3);
+}
+.main-card-card:hover::after {
+  content: ""; position: absolute; top: -14px; right: -12px; width: 44px; height: 30px;
+  background: var(--pglp-bow) center / contain no-repeat; pointer-events: none;
+}
+.main-card-card img, .main-image-image { border-radius: 14px; }
+
+/* ---- Buttons --------------------------------------------------------- */
+/* [FRAGILE] green play buttons -> pink hearts */
+.main-playButton-PlayButton, [data-testid="play-button"] {
+  background-color: transparent !important;
+  background-image: var(--pglp-heart) !important;
+  background-size: contain; background-repeat: no-repeat; background-position: center;
+  border-radius: 0 !important;
+  filter: drop-shadow(0 4px 0 rgba(179, 18, 46, .35));
+  transition: transform .2s cubic-bezier(.3, 1.8, .5, 1);
+}
+.main-playButton-PlayButton svg, [data-testid="play-button"] svg { fill: #fff !important; transform: scale(.7); }
+.main-playButton-PlayButton:hover, [data-testid="play-button"]:hover { transform: scale(1.18) rotate(-6deg); }
+
+/* [FRAGILE] now-playing bar play/pause */
+[data-testid="control-button-playpause"] {
+  background: var(--pglp-pink) !important;
+  border: 3px solid #fff !important;
+  box-shadow: 0 3px 0 rgba(179, 18, 46, .4);
+  transition: transform .2s cubic-bezier(.3, 1.8, .5, 1);
+}
+[data-testid="control-button-playpause"] svg { fill: #fff !important; }
+[data-testid="control-button-playpause"]:hover { transform: scale(1.15) rotate(8deg); }
+[data-testid="control-button-playpause"]:active { transform: scale(.92); }
+
+.main-playPauseButton-button svg, button[data-encore-id="buttonPrimary"] { fill: var(--pglp-pink); }
+button[data-encore-id="buttonPrimary"] { background: var(--pglp-pink) !important; color: #fff !important; border-radius: 999px; }
+
+/* ---- Now-playing bar ------------------------------------------------- */
+/* [FRAGILE] */
+.Root__now-playing-bar, .main-nowPlayingBar-container, .main-nowPlayingBar-nowPlayingBar {
+  background: var(--pglp-cream) !important;
+  border-top: 3px dashed var(--pglp-pink) !important;
+}
+.main-nowPlayingWidget-coverArt, .cover-art, [data-testid="cover-art-image"] { position: relative; }
+.main-nowPlayingWidget-coverArt .cover-art, .main-coverSlotExpanded-container {
+  border: 4px solid #fff; border-radius: 14px;
+  box-shadow: 0 4px 0 rgba(179, 18, 46, .3);
+  transform: rotate(-2deg);
+}
+.main-nowPlayingWidget-coverArt::after {
+  content: ""; position: absolute; top: -12px; left: -12px; width: 38px; height: 26px;
+  background: var(--pglp-bow) center / contain no-repeat; pointer-events: none; transform: rotate(-18deg);
+}
+
+/* ---- Progress bar with cherry thumb ---------------------------------- */
+/* [FRAGILE] */
+.playback-progressbar, .progress-bar, [data-testid="progress-bar"] {
+  --fg-color: var(--pglp-pink); --bg-color: #F7C6D4; --progress-bar-height: 8px;
+}
+.progress-bar__slider, [data-testid="progress-bar"] [data-testid="progress-bar-slider"], .x-progressBar-sliderArea::after {
+  background: var(--pglp-cherry-img) center / contain no-repeat !important;
+  width: 22px !important; height: 22px !important; border-radius: 0 !important; box-shadow: none !important;
+}
+.x-progressBar-fillColor, .progress-bar__fg { background: var(--pglp-pink) !important; border-radius: 99px; }
+.x-progressBar-progressBarBg, .progress-bar__bg { border-radius: 99px; }
+
+/* ---- Header bows ----------------------------------------------------- */
+/* [FRAGILE] playlist / artist headers */
+.main-entityHeader-container, .main-entityHeader-background, [data-testid="entityHeader"] { position: relative; }
+.main-entityHeader-container::after {
+  content: ""; position: absolute; top: 8px; right: 24px; width: 90px; height: 60px;
+  background: var(--pglp-bow) center / contain no-repeat; pointer-events: none; transform: rotate(10deg);
+  filter: drop-shadow(0 4px 0 rgba(179, 18, 46, .25));
+}
+
+/* ---- Track rows & scrollbars ----------------------------------------- */
+.main-trackList-trackListRow { border-radius: 12px; transition: background .2s, transform .2s; }
+.main-trackList-trackListRow:hover { background: var(--pglp-rose) !important; transform: translateX(3px); }
+.main-trackList-selected, .main-trackList-active { background: #FFB8CE !important; }
+::-webkit-scrollbar { width: 12px; }
+::-webkit-scrollbar-thumb { background: var(--pglp-pink); border: 3px solid var(--pglp-cream); border-radius: 99px; }
+
+/* ==========================================================================
+   Interaction hooks used by theme.js
+   ========================================================================== */
+.pglp-sticker-layer {
+  position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 3;
+}
+.pglp-sticker {
+  position: absolute; width: 56px; height: 56px; background-size: contain; background-repeat: no-repeat;
+  opacity: .85; will-change: transform; filter: drop-shadow(0 3px 0 rgba(179, 18, 46, .25));
+  transition: transform .5s cubic-bezier(.2, 1.3, .4, 1);
+}
+
+.pglp-burst {
+  position: fixed; width: 28px; height: 28px; z-index: 9999; pointer-events: none;
+  background-size: contain; background-repeat: no-repeat;
+}
+.pglp-heart-big {
+  position: fixed; width: 120px; height: 108px; z-index: 9999; pointer-events: none;
+  background: var(--pglp-heart) center / contain no-repeat;
+  transform: translate(-50%, -50%);
+}
+
+.pglp-quote {
+  display: block; margin: 12px auto; text-align: center; font-family: var(--pglp-font-script);
+  font-size: 1.6em; color: var(--pglp-pink); text-shadow: 0 2px 0 #fff;
+}
+
+.pglp-toggle {
+  position: fixed; right: 18px; bottom: 100px; z-index: 10000; width: 40px; height: 40px;
+  border: 3px solid #fff; border-radius: 50%; background: var(--pglp-pink); color: #fff;
+  font-size: 18px; line-height: 1; cursor: pointer; box-shadow: 0 3px 0 rgba(179, 18, 46, .4);
+  transition: transform .2s cubic-bezier(.3, 1.8, .5, 1);
+}
+.pglp-toggle:hover { transform: scale(1.15) rotate(-8deg); }
+.pglp-toggle[aria-pressed="false"] { background: #E7B5C4; }
+
+body.pglp-effects-off .pglp-sticker-layer { display: none; }
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes pglp-burst-fly {
+    0%   { opacity: 1; transform: translate(0, 0) scale(.6) rotate(0); }
+    100% { opacity: 0; transform: translate(var(--bx), var(--by)) scale(1.3) rotate(var(--br)); }
+  }
+  @keyframes pglp-heart-rise {
+    0%   { opacity: 0; transform: translate(-50%, -50%) scale(.2); }
+    25%  { opacity: 1; transform: translate(-50%, -80%) scale(1.15); }
+    100% { opacity: 0; transform: translate(-50%, -260%) scale(1); }
+  }
+  @keyframes pglp-bob {
+    0%, 100% { margin-top: 0; } 50% { margin-top: -10px; }
+  }
+  @keyframes pglp-wobble {
+    0%, 100% { transform: rotate(0); } 25% { transform: rotate(-10deg) scale(1.1); } 75% { transform: rotate(10deg) scale(1.1); }
+  }
+  .pglp-burst { animation: pglp-burst-fly .9s ease-out forwards; }
+  .pglp-heart-big { animation: pglp-heart-rise 1.3s ease-out forwards; }
+  .pglp-sticker { animation: pglp-bob 4s ease-in-out infinite; }
+  .pglp-sticker:nth-child(2n) { animation-duration: 5.5s; animation-delay: -1s; }
+  .pglp-wobble { animation: pglp-wobble .6s ease; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .main-card-card, .main-card-card:hover, .main-trackList-trackListRow:hover,
+  [data-testid="control-button-playpause"]:hover, .main-playButton-PlayButton:hover {
+    transform: none !important; transition: none !important;
+  }
+  .pglp-sticker-layer, .pglp-burst, .pglp-heart-big { display: none !important; }
+}
