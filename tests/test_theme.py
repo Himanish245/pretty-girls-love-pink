@@ -88,15 +88,28 @@ class CssTests(unittest.TestCase):  # Task 3
 
     def test_text_gets_solid_plate(self):
         css = read("user.css")
-        m = re.search(r"/\* PGLP-TEXT-PLATE \*/([^{]*)\{([^}]*)\}", css)
-        self.assertTrue(m, "text plate rule missing")
+        m = re.search(r"/\* PGLP-TEXT-PLATE: Removed bulky backgrounds, using text-shadow for readability \*/([^{]*)\{([^}]*)\}", css)
+        self.assertTrue(m, "text readability rule missing")
         self.assertIn(".encore-text", m.group(1))
-        self.assertRegex(m.group(2), r"background:\s*rgba\(255,\s*245,\s*238,\s*0?\.(9|8[5-9])")
+        self.assertIn("text-shadow", m.group(2))
 
     def test_3d_hooks(self):
         css = read("user.css")
         for hook in ["--rx", "--ry", "preserve-3d", "perspective", ".pglp-glare"]:
             self.assertIn(hook, css, hook)
+
+
+    def test_spotify_dark_overlays_are_neutralised(self):
+        css = read("user.css")
+        self.assertIn("dqwQhIudKoD98eWJzj5E", css)  # home header black gradient
+        self.assertIn("--carousel-start-chevron-gradient", css)
+        self.assertIn("--carousel-end-chevron-gradient", css)
+        self.assertIn("--background-tinted-base", css)
+
+    def test_text_plate_matches_new_encore_classes(self):
+        css = read("user.css")
+        m = re.search(r"/\* PGLP-TEXT-PLATE: Removed bulky backgrounds, using text-shadow for readability \*/([^{]*)\{", css)
+        self.assertIn('[class*="encore-text"]', m.group(1))
 
 
 def run_js(expr):
@@ -151,6 +164,13 @@ class JsTests(unittest.TestCase):  # Task 4
 
     def test_tilt_zero_size_is_safe(self):
         self.assertEqual(run_js("PGLP.tiltFor(5,5,0,0,10)"), {"rx": 0, "ry": 0})
+
+    def test_is_dark_overlay(self):
+        self.assertTrue(run_js("PGLP.isDarkOverlay('linear-gradient(rgba(0, 0, 0, 0.6) 0%, rgb(18, 18, 18) 100%), url(x)')"))
+        self.assertTrue(run_js("PGLP.isDarkOverlay('linear-gradient(#0009 0%, red 100%)')"))
+        self.assertFalse(run_js("PGLP.isDarkOverlay('none')"))
+        self.assertFalse(run_js("PGLP.isDarkOverlay('linear-gradient(rgb(255, 228, 236), white)')"))
+        self.assertFalse(run_js("PGLP.isDarkOverlay(undefined)"))
 
     def test_init_is_noop_without_spicetify(self):
         # No Spicetify/document in jsc: init must not throw.

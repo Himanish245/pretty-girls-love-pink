@@ -84,7 +84,7 @@ body, .Root, .encore-dark-theme, .encore-light-theme {
 
 /* ---- Glass: sidebar over the lily print ------------------------------- */
 /* [FRAGILE] */
-.Root__nav-bar, .main-navBar-navBar, .main-yourLibraryX-libraryContainer {
+.Root__nav-bar, .main-navBar-navBar, .main-yourLibraryX-libraryContainer, .Root__right-sidebar {
   background:
     linear-gradient(160deg, rgba(255, 255, 255, .55), rgba(255, 209, 223, .35)),
     var(--pglp-img-lilies) center / cover no-repeat !important;
@@ -109,34 +109,44 @@ body, .Root, .encore-dark-theme, .encore-light-theme {
 /* ==========================================================================
    Readability: every piece of text sits on a solid cream plate
    ========================================================================== */
-/* PGLP-TEXT-PLATE */
-.encore-text, .main-type-canon, .main-type-alto, .main-type-forte, .main-type-ballad,
+/* PGLP-TEXT-PLATE: Removed bulky backgrounds, using text-shadow for readability */
+.encore-text, [class*="encore-text"], .main-type-canon, .main-type-alto, .main-type-forte, .main-type-ballad,
 .main-type-mesto, .main-type-mestoBold, .main-type-finale, .main-type-viola,
 .main-shelf-title, .main-cardHeader-text, .main-card-cardMetadata, .main-trackList-rowTitle,
 .main-navBar-navBarLink, .main-nowPlayingWidget-trackInfo, .main-entityHeader-title,
 .main-trackList-rowSectionEnd, h1, h2, h3 {
-  background: rgba(255, 245, 238, .92);
-  padding: .08em .6em;
-  border-radius: 12px;
-  box-decoration-break: clone;
-  -webkit-box-decoration-break: clone;
-  box-shadow: 0 0 0 1.5px #fff, 0 3px 0 rgba(179, 18, 46, .16);
-  width: fit-content;
-  max-width: 100%;
-}
-/* no double plates, and none inside the pink buttons / bars */
-.encore-text .encore-text, [class*="main-type-"] [class*="main-type-"],
-button .encore-text, [role="button"] .encore-text, .pglp-toggle {
-  background: transparent; box-shadow: none; padding: 0;
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.9), 0 0 10px rgba(255, 255, 255, 0.8), 0 0 15px rgba(255, 255, 255, 0.5);
 }
 
-/* solid-ish rows for track lists */
+/* ==========================================================================
+   Kill Spotify's own dark overlays and extracted background colors
+   ========================================================================== */
+/* Home header fade and Playlist dynamic headers */
+.dqwQhIudKoD98eWJzj5E, .main-home-homeHeader, .main-entityHeader-background,
+.main-entityHeader-backgroundColor, .main-entityHeader-overlay,
+.main-actionBarBackground-background, .under-main-view {
+  background: none !important;
+  background-image: none !important;
+  background-color: transparent !important;
+}
+/* Shelf edge fades that were dark (#121212b3) -> soft blush */
+.Root__main-view, .Root__main-view * {
+  --carousel-start-chevron-gradient: rgba(255, 228, 236, .9) !important;
+  --carousel-end-chevron-gradient: rgba(255, 228, 236, .9) !important;
+}
+/* Chip / tinted surfaces that default to translucent black */
+.Root, .Root * {
+  --background-tinted-base: rgba(255, 255, 255, .7) !important;
+  --background-tinted-highlight: rgba(255, 255, 255, .92) !important;
+  --background-tinted-press: rgba(255, 209, 223, .95) !important;
+}
+
+/* clean transparent rows for track lists */
 .main-trackList-trackListRow {
-  background: rgba(255, 245, 238, .8);
+  background: transparent;
   border-radius: 14px;
-  margin-bottom: 4px;
-  box-shadow: 0 0 0 1.5px rgba(255, 255, 255, .9);
-  transition: transform .2s, background .2s;
+  margin-bottom: 2px;
+  transition: transform .2s, background .2s, box-shadow .2s;
 }
 .main-trackList-trackListRow:hover { background: #fff !important; transform: translateX(4px); }
 .main-trackList-selected, .main-trackList-active { background: #FFD1DF !important; }
@@ -146,8 +156,8 @@ h1, h2, h3, .main-type-canon, .main-type-alto, .main-type-forte,
 .encore-text-title-large, .encore-text-headline-large, .main-entityHeader-title {
   font-family: var(--pglp-font-head) !important;
   color: var(--pglp-cherry) !important;
-  /* extruded 3D lettering */
-  text-shadow: 0 1px 0 #F7A8BF, 0 2px 0 #F28AA8, 0 3px 0 #E8467C, 0 7px 10px rgba(179, 18, 46, .25);
+  /* clean glowing lettering */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 0 12px rgba(255, 255, 255, 0.8);
 }
 .main-shelf-title, .main-type-ballad { font-family: var(--pglp-font-script); font-size: 1.5em; color: var(--pglp-pink) !important; }
 .main-navBar-navBarLink, .main-yourLibraryX-navLink { font-family: var(--pglp-font-head); transition: transform .2s, color .2s; }
@@ -210,9 +220,9 @@ h1, h2, h3, .main-type-canon, .main-type-alto, .main-type-forte,
 .main-playButton-PlayButton:hover, [data-testid="play-button"]:hover { transform: scale(1.2) rotate(-6deg); }
 
 [data-testid="control-button-playpause"] {
-  background: radial-gradient(circle at 30% 25%, #FF8DB0, var(--pglp-pink) 60%, #C22D60) !important;
+  background: var(--pglp-pink) !important;
   border: 2px solid #fff !important;
-  box-shadow: 0 1px 0 #8F0E24, 0 2px 0 #8F0E24, 0 3px 0 #8F0E24, 0 8px 12px rgba(90, 15, 36, .35), inset 0 2px 4px rgba(255, 255, 255, .6);
+  box-shadow: 0 4px 10px rgba(90, 15, 36, .2);
   transition: transform .2s cubic-bezier(.3, 1.8, .5, 1);
 }
 [data-testid="control-button-playpause"] svg { fill: #fff !important; }
@@ -281,15 +291,15 @@ button[data-encore-id="buttonPrimary"] { background: var(--pglp-pink) !important
 .pglp-quote {
   display: block; margin: 12px auto; text-align: center; font-family: var(--pglp-font-script);
   font-size: 1.5em; color: var(--pglp-pink); width: fit-content; max-width: 90%;
-  background: rgba(255, 245, 238, .92); padding: .15em .8em; border-radius: 14px;
-  box-shadow: 0 0 0 1.5px #fff, 0 3px 0 rgba(179, 18, 46, .16);
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.9), 0 0 10px rgba(255, 255, 255, 0.8);
+  padding: .15em .8em;
 }
 
 .pglp-toggle {
   position: fixed; right: 18px; bottom: 100px; z-index: 10000; width: 42px; height: 42px;
   border: 2px solid #fff; border-radius: 50%; color: #fff; font-size: 18px; line-height: 1; cursor: pointer;
-  background: radial-gradient(circle at 30% 25%, #FF8DB0, var(--pglp-pink) 60%, #C22D60);
-  box-shadow: 0 1px 0 #8F0E24, 0 2px 0 #8F0E24, 0 3px 0 #8F0E24, 0 8px 12px rgba(90, 15, 36, .35);
+  background: var(--pglp-pink);
+  box-shadow: 0 2px 8px rgba(90, 15, 36, .25);
   transition: transform .2s cubic-bezier(.3, 1.8, .5, 1);
 }
 .pglp-toggle:hover { transform: scale(1.15) rotate(-8deg); }

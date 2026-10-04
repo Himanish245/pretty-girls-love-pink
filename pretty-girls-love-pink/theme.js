@@ -60,6 +60,13 @@
     return { rx: -ny * max + 0, ry: nx * max + 0 };
   }
 
+  // True when a computed background-image starts with a black/near-black gradient
+  // (Spotify's dark header fade), so it can be cleared.
+  function isDarkOverlay(bg) {
+    if (typeof bg !== 'string') return false;
+    return /^linear-gradient\(\s*(rgba?\(\s*0\s*,\s*0\s*,\s*0|#000)/i.test(bg.trim());
+  }
+
   /* --------------------------- DOM layer --------------------------- */
 
   var ICONS = {
@@ -242,6 +249,23 @@
     });
   }
 
+  /* ---- clear Spotify's black header gradient wherever it appears ---- */
+  function clearDarkOverlays() {
+    var scope = document.querySelector('.Root__main-view');
+    if (!scope) return;
+    var nodes = scope.querySelectorAll('div');
+    var limit = Math.min(nodes.length, 400); // header overlays live near the top of the tree
+    for (var i = 0; i < limit; i++) {
+      var n = nodes[i];
+      if (n.dataset && n.dataset.pglpClean) continue;
+      var bg = getComputedStyle(n).backgroundImage;
+      if (isDarkOverlay(bg)) {
+        n.style.setProperty('background-image', 'none', 'important');
+        n.dataset.pglpClean = '1';
+      }
+    }
+  }
+
   /* ---- quotes ---- */
   var EMPTY_SELECTOR = '[data-testid="empty-state"], [data-testid="search-no-results"], .x-searchEmpty';
 
@@ -317,7 +341,7 @@
       new MutationObserver(function () {
         if (pending) return;
         pending = true;
-        setTimeout(function () { pending = false; ensureQuotes(); }, 400);
+        setTimeout(function () { pending = false; ensureQuotes(); clearDarkOverlays(); }, 400);
       }).observe(document.body, { childList: true, subtree: true });
     }
     setInterval(rotateQuotes, 9000);
@@ -339,6 +363,7 @@
     loadEffectsEnabled: loadEffectsEnabled,
     pickQuote: pickQuote,
     tiltFor: tiltFor,
+    isDarkOverlay: isDarkOverlay,
     init: init
   };
   root.PGLP = PGLP;
