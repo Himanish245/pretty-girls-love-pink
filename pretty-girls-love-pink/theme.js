@@ -52,6 +52,14 @@
     return QUOTES[((index % n) + n) % n];
   }
 
+  // Map a cursor position inside a w x h box to card rotation (degrees), clamped to +-max.
+  function tiltFor(x, y, w, h, max) {
+    if (!(w > 0) || !(h > 0)) return { rx: 0, ry: 0 };
+    var nx = Math.max(-1, Math.min(1, (x / w - 0.5) * 2));
+    var ny = Math.max(-1, Math.min(1, (y / h - 0.5) * 2));
+    return { rx: -ny * max + 0, ry: nx * max + 0 };
+  }
+
   /* --------------------------- DOM layer --------------------------- */
 
   var ICONS = {
@@ -151,19 +159,45 @@
     burst(c.x, c.y, 10);
   }
 
+  var TILT_SELECTOR = '.main-card-card, [data-testid="card"], .main-nowPlayingWidget-coverArt';
+
+  function ensureGlare(card) {
+    if (card.querySelector(':scope > .pglp-glare')) return;
+    var g = el('span', 'pglp-glare');
+    card.appendChild(g);
+  }
+
   function onCardMove(ev) {
     if (!motionOk() || !ev.target || !ev.target.closest) return;
-    var card = ev.target.closest('.main-card-card');
+    var card = ev.target.closest(TILT_SELECTOR);
     if (!card) return;
     var r = card.getBoundingClientRect();
-    var t = ((ev.clientX - r.left) / r.width - 0.5) * 6; // -3deg .. 3deg
-    card.style.setProperty('--pglp-tilt', t.toFixed(2) + 'deg');
+    var x = ev.clientX - r.left, y = ev.clientY - r.top;
+    var max = 12;
+    var t = tiltFor(x, y, r.width, r.height, max);
+    card.style.setProperty('--rx', t.rx.toFixed(2) + 'deg');
+    card.style.setProperty('--ry', t.ry.toFixed(2) + 'deg');
+    card.style.setProperty('--gx', (x / r.width * 100).toFixed(1) + '%');
+    card.style.setProperty('--gy', (y / r.height * 100).toFixed(1) + '%');
+    ensureGlare(card);
   }
 
   function onCardLeave(ev) {
     if (!ev.target || !ev.target.closest) return;
-    var card = ev.target.closest('.main-card-card');
-    if (card && !card.contains(ev.relatedTarget)) card.style.removeProperty('--pglp-tilt');
+    var card = ev.target.closest(TILT_SELECTOR);
+    if (card && !card.contains(ev.relatedTarget)) {
+      ['--rx', '--ry', '--gx', '--gy'].forEach(function (p) { card.style.removeProperty(p); });
+    }
+  }
+
+  // Parallax: background layers drift against the cursor.
+  function onParallax(ev) {
+    if (!motionOk()) return;
+    var px = (ev.clientX / window.innerWidth - 0.5) * 2;
+    var py = (ev.clientY / window.innerHeight - 0.5) * 2;
+    var s = document.documentElement.style;
+    s.setProperty('--pglp-px', px.toFixed(3));
+    s.setProperty('--pglp-py', py.toFixed(3));
   }
 
   /* ---- background sticker layer ---- */
@@ -184,7 +218,7 @@
     var spots = [[.005, .45], [.97, .08], [.18, .94], [.97, .50], [.55, .005], [.90, .90], [.005, .78], [.70, .94]];
     spots.forEach(function (sp, i) {
       var n = el('div', 'pglp-sticker');
-      n.style.backgroundImage = 'url("' + ICON_LIST[i % ICON_LIST.length] + '")';
+      n.style.setProperty('--pglp-img', 'url("' + ICON_LIST[i % ICON_LIST.length] + '")');
       n.style.rotate = (i % 2 ? 1 : -1) * (8 + i * 3) + 'deg';
       layer.appendChild(n);
       state.stickers.push({ node: n, fx: sp[0], fy: sp[1], x: 0, y: 0 });
@@ -269,6 +303,7 @@
 
     document.addEventListener('mousemove', onMouseMove, { passive: true });
     document.addEventListener('mousemove', onCardMove, { passive: true });
+    document.addEventListener('mousemove', onParallax, { passive: true });
     document.addEventListener('mouseout', onCardLeave, { passive: true });
     document.addEventListener('click', onClick, true);
     root.addEventListener('resize', layoutStickers);
@@ -303,6 +338,7 @@
     repel: repel,
     loadEffectsEnabled: loadEffectsEnabled,
     pickQuote: pickQuote,
+    tiltFor: tiltFor,
     init: init
   };
   root.PGLP = PGLP;

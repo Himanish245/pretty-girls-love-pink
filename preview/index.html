@@ -14,7 +14,7 @@
   .main-gridContainer-gridContainer { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 18px; margin-top: 16px; }
   .main-card-card { padding: 14px; }
   .main-card-card .art { aspect-ratio: 1; border-radius: 14px; margin-bottom: 10px; }
-  .main-playButton-PlayButton { position: absolute; right: 14px; bottom: 70px; width: 44px; height: 44px; border: 0; cursor: pointer; }
+  .main-playButton-PlayButton { position: absolute; right: 14px; bottom: 100px; width: 44px; height: 44px; border: 0; cursor: pointer; }
   [data-testid="control-button-playpause"] { width: 44px; height: 44px; border-radius: 50%; cursor: pointer; }
   .cover { width: 56px; height: 56px; background: linear-gradient(135deg,#E8467C,#FFB8CE); }
   .main-trackList-trackListRow { padding: 10px; }
@@ -63,7 +63,7 @@
       names.forEach(function (n, i) {
         var c = document.createElement('div');
         c.className = 'main-card-card';
-        c.innerHTML = '<div class="art" style="background:' + cols[i % 4] + '"></div><strong>' + n + '</strong><button class="main-playButton-PlayButton" aria-label="Play"></button>';
+        c.innerHTML = '<div class="art" style="background:' + cols[i % 4] + '"></div><strong class="encore-text">' + n + '</strong><div class="main-card-cardMetadata" style="margin-top:6px">Playlist &bull; for you</div><button class="main-playButton-PlayButton" aria-label="Play"></button>';
         grid.appendChild(c);
       });
       document.getElementById('pp').addEventListener('click', function () {

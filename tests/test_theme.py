@@ -76,6 +76,28 @@ class CssTests(unittest.TestCase):  # Task 3
         self.assertTrue(m)
         self.assertIn("pointer-events: none", m.group(1))
 
+    def test_reference_images_are_embedded(self):
+        css = read("user.css")
+        for var in ["--pglp-img-bows", "--pglp-img-lilies"]:
+            m = re.search(re.escape(var) + r":\s*url\(\"data:image/jpeg;base64,[A-Za-z0-9+/=]{500,}\"\)", css)
+            self.assertTrue(m, var + " not embedded")
+
+    def test_glass_surfaces(self):
+        css = read("user.css")
+        self.assertGreaterEqual(css.count("backdrop-filter"), 3)
+
+    def test_text_gets_solid_plate(self):
+        css = read("user.css")
+        m = re.search(r"/\* PGLP-TEXT-PLATE \*/([^{]*)\{([^}]*)\}", css)
+        self.assertTrue(m, "text plate rule missing")
+        self.assertIn(".encore-text", m.group(1))
+        self.assertRegex(m.group(2), r"background:\s*rgba\(255,\s*245,\s*238,\s*0?\.(9|8[5-9])")
+
+    def test_3d_hooks(self):
+        css = read("user.css")
+        for hook in ["--rx", "--ry", "preserve-3d", "perspective", ".pglp-glare"]:
+            self.assertIn(hook, css, hook)
+
 
 def run_js(expr):
     """Load theme.js in jsc and evaluate expr, returning parsed JSON."""
@@ -114,6 +136,21 @@ class JsTests(unittest.TestCase):  # Task 4
         quotes = [run_js("PGLP.pickQuote(%d)" % i) for i in range(10)]
         self.assertIn("buy me books & tell me I'm pretty", quotes)
         self.assertIn("pretty girls love pink!", quotes)
+
+    def test_tilt_center_is_flat(self):
+        self.assertEqual(run_js("PGLP.tiltFor(50,50,100,100,10)"), {"rx": 0, "ry": 0})
+
+    def test_tilt_direction_and_clamp(self):
+        r = run_js("PGLP.tiltFor(100,50,100,100,10)")  # cursor at right edge
+        self.assertEqual(r["ry"], 10)
+        self.assertEqual(r["rx"], 0)
+        t = run_js("PGLP.tiltFor(50,0,100,100,10)")  # cursor at top edge
+        self.assertEqual(t["rx"], 10)
+        far = run_js("PGLP.tiltFor(900,-900,100,100,10)")  # outside: clamped
+        self.assertEqual(far, {"rx": 10, "ry": 10})
+
+    def test_tilt_zero_size_is_safe(self):
+        self.assertEqual(run_js("PGLP.tiltFor(5,5,0,0,10)"), {"rx": 0, "ry": 0})
 
     def test_init_is_noop_without_spicetify(self):
         # No Spicetify/document in jsc: init must not throw.
