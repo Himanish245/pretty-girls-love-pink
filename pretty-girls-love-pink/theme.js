@@ -181,7 +181,7 @@
 
   function buildStickers() {
     layer = el('div', 'pglp-sticker-layer');
-    var spots = [[.02, .12], [.95, .10], [.03, .62], [.94, .55], [.50, .03], [.88, .82], [.12, .88], [.70, .90]];
+    var spots = [[.005, .45], [.97, .08], [.18, .94], [.97, .50], [.55, .005], [.90, .90], [.005, .78], [.70, .94]];
     spots.forEach(function (sp, i) {
       var n = el('div', 'pglp-sticker');
       n.style.backgroundImage = 'url("' + ICON_LIST[i % ICON_LIST.length] + '")';

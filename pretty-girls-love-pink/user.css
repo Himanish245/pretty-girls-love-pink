@@ -68,7 +68,7 @@ h1, h2, h3, .main-type-canon, .main-type-alto, .main-type-forte, .encore-text-ti
 
 /* ---- Sticker cards --------------------------------------------------- */
 /* [FRAGILE] shelf / grid cards */
-.main-card-card, [data-testid="card"], .main-gridContainer-gridContainer > div > div {
+.main-card-card, [data-testid="card"] {
   background: var(--pglp-rose) !important;
   border: 4px solid #fff !important;
   border-radius: 20px !important;
