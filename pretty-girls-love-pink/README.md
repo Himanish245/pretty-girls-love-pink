@@ -1,4 +1,4 @@
-# Pretty Girls Love Pink 🎀🍒
+# girly spotify 🎀🍒
 
 A pink coquette / bookish-girly **Spicetify** theme for the Spotify desktop app: gingham backgrounds,
 sticker-style cards, bows, cherries and hearts, plus playful interactions.
