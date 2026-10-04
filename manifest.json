@@ -1,0 +1,14 @@
+{
+    "name": "Pretty Girls Love Pink",
+    "description": "A highly interactive, frosted glass 'coquette' pink theme for Spotify with 3D tilting effects.",
+    "preview": "preview.png",
+    "readme": "pretty-girls-love-pink/README.md",
+    "usercss": "pretty-girls-love-pink/user.css",
+    "schemes": "pretty-girls-love-pink/color.ini",
+    "include": ["https://himanish245.github.io/pretty-girls-love-pink/pretty-girls-love-pink/theme.js"],
+    "branch": "main",
+    "authors": [
+        { "name": "Himanish245", "url": "https://github.com/Himanish245" }
+    ],
+    "tags": ["pink", "coquette", "glass", "3d", "interactive", "light"]
+}
